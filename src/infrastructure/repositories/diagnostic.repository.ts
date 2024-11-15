@@ -8,12 +8,9 @@ import { PrismaService } from 'src/domain/services/prisma.service';
 export class DiagnosticRepository {
   constructor(private prismaService: PrismaService) {}
 
-  async create(
-    patientId: number,
-    body: CreateDiagnosticDto,
-  ): Promise<Diagnostic> {
+  async create(body: CreateDiagnosticDto): Promise<Diagnostic> {
     const newDiagnostic = await this.prismaService.diagnostic.create({
-      data: { patientId, ...body },
+      data: body,
     });
 
     return newDiagnostic;

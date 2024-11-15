@@ -41,19 +41,15 @@ export class DiagnosticService {
   }
 
   async createPatientDiagnostic(
-    patientId: number,
     body: dtos.CreateDiagnosticDto,
   ): Promise<Diagnostic> {
-    const patient = await this.patientRepository.getById(patientId);
+    const patient = await this.patientRepository.getById(body.patientId);
 
     if (!patient) {
       throw new NotFoundException('Patient not found!');
     }
 
-    const newDiagnostic = await this.diagnosticRepository.create(
-      patientId,
-      body,
-    );
+    const newDiagnostic = await this.diagnosticRepository.create({ ...body });
 
     return newDiagnostic;
   }

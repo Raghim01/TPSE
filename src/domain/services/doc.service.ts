@@ -5,7 +5,6 @@ import {
   NotFoundException,
   Req,
 } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
 import { DocRepository } from 'src/infrastructure/repositories';
 import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
@@ -14,10 +13,7 @@ import { hash } from 'bcrypt';
 
 @Injectable()
 export class DocService {
-  constructor(
-    private prismaService: PrismaService,
-    private docRepository: DocRepository,
-  ) {}
+  constructor(private docRepository: DocRepository) {}
 
   async signUp(body: SignUpDocDto, req: Request) {
     const { password, email } = body;
@@ -74,13 +70,6 @@ export class DocService {
 
   async passworMatch(password: string, hash: string): Promise<boolean> {
     return await bcrypt.compare(password, hash);
-  }
-
-  async login(): Promise<any> {
-    return {
-      message: 'Login successful',
-      statusCode: HttpStatus.OK,
-    };
   }
 
   async logout(@Req() request: Request): Promise<any> {
